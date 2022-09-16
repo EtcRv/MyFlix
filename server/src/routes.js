@@ -1,7 +1,7 @@
 const AuthenticationController = require("./controllers/AuthenticationController");
 const AuthenticationControllerPolicy = require("./policies/AuthenticationControllerPolicy");
 const FavoriteController = require("./controllers/FavoriteController");
-
+const TokenRequire = require("./policies/TokenRequire");
 module.exports = (app) => {
   app.post(
     "/register",
@@ -9,7 +9,11 @@ module.exports = (app) => {
     AuthenticationController.register
   );
   app.post("/login", AuthenticationController.login);
-  app.post("/favorite", FavoriteController.addMovie);
-  app.get("/favorite/:ownerId", FavoriteController.getMovie);
-  app.delete("/favorite/:id", FavoriteController.deleteMovie);
+  app.post("/favorite", TokenRequire.auth, FavoriteController.addMovie);
+  app.get("/favorite/:ownerId", TokenRequire.auth, FavoriteController.getMovie);
+  app.delete(
+    "/favorite/:id",
+    TokenRequire.auth,
+    FavoriteController.deleteMovie
+  );
 };

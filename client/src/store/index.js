@@ -9,7 +9,11 @@ export default createStore({
     isUserLoggedIn: false,
     token: null,
   },
-  getters: {},
+  getters: {
+    getToken(state) {
+      return state.token
+    }
+  },
   mutations: {
     setToken(state, token) {
       state.token = token;
